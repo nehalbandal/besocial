@@ -11,7 +11,7 @@
         {% endif %}
         <h2>Groups</h2>
 
-        <p>Welcome to the Groups Page! <br>Select a Group with a shared interest!</p>
+        <p>Welcome to the Be Social website! <br>Join Groups with a shared interest!</p>
     </div>
     {% if user.is_authenticated %}
     <a href="{% url 'groups:create' %}" class="btn btn-warning" role="button"><span class="fa fa-plus"></span> Create
@@ -29,7 +29,7 @@
                 {% if user in group.members.all %}
                     <a href="{% url 'groups:single' slug=group.slug %}"
                        class="list-group-item list-group-item-action flex-column align-items-start">
-                        <img class="rounded-circle article-img" src="{{ group.profile_pic.url }}" class="img-responsive" width="100" alt="Image Not Available" style="float:left; margin:10px;">
+                        <img class="rounded-circle article-img" src="{{ group.profile_pic.url }}" class="img-responsive" width="110" height="80" alt="Image Not Available" style="float:left; margin:10px;">
                         <h3 class="mb-1">{{ group.name }}</h3>
                         <p class="mb-1">{{ group.description_html|safe }}</p>
                         <div class="d-flex w-40 justify-content-between">
@@ -55,7 +55,7 @@
             {% if user not in group.members.all %}
                 <a href="{% url 'groups:single' slug=group.slug %}"
                    class="list-group-item list-group-item-action flex-column align-items-start">
-                    <img class="rounded-circle article-img" src="{{ group.profile_pic.url }}" class="img-responsive" width="100" alt="Image Not Available" style="float:left; margin:10px;">
+                    <img class="rounded-circle article-img" src="{{ group.profile_pic.url }}" class="img-responsive"  width="110" height="80" alt="Image Not Available" style="float:left; margin:10px;">
                     <h3 class="mb-1">{{ group.name }}</h3>
                     <p class="mb-1">{{ group.description_html|safe }}</p>
                     <div class="d-flex w-40 justify-content-between">
