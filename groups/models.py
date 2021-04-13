@@ -35,6 +35,8 @@ class Group(models.Model):
 class GroupMember(models.Model):
     """
     This is an intermediate table created to handle Many To Many relationship between user and group.
+    Get groups related to user: userObj.group_set.all() or userObj.user_groups.all()
+    Get users related to group: groupObj.members.all() or groupObj.memberships.all()
     """
     group = models.ForeignKey(Group, related_name='memberships', on_delete=models.CASCADE)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='user_groups', on_delete=models.CASCADE)

@@ -3,6 +3,22 @@ from django.contrib.auth.admin import UserAdmin
 
 from .forms import CustomUserCreationForm, CustomUserChangeForm
 from .models import CustomUser
+from django.contrib.admin import AdminSite
+from .views import UpdateUserProfile
+
+class MyAdminSite(AdminSite):
+    def get_urls(self):
+        from django.urls import path
+        urls = super(MyAdminSite, self).get_urls()
+        # Note that custom urls get pushed to the list (not appended)
+        # This doesn't work with urls += ...
+        print("URLS: ", urls)
+        urls = [
+            path('my_view/<int:pk>/edit/', self.admin_view(UpdateUserProfile.as_view()))
+        ] + urls
+        return urls
+
+admin_site = MyAdminSite()
 
 
 class CustomUserAdmin(UserAdmin):
@@ -26,4 +42,4 @@ class CustomUserAdmin(UserAdmin):
     ordering = ('email',)
 
 
-admin.site.register(CustomUser, CustomUserAdmin)
+admin_site.register(CustomUser, CustomUserAdmin)

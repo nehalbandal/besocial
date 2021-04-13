@@ -1,0 +1,54 @@
+######## user admin.py
+from django.contrib.admin import AdminSite
+from .views import UpdateUserProfile
+
+class MyAdminSite(AdminSite):
+    def get_urls(self):
+        from django.urls import path
+        urls = super(MyAdminSite, self).get_urls()
+        # Note that custom urls get pushed to the list (not appended)
+        # This doesn't work with urls += ...
+        print("URLS: ", urls)
+        urls = [
+            path('my_view/<int:pk>/edit/', self.admin_view(UpdateUserProfile.as_view()))
+        ] + urls
+        return urls
+
+admin_site = MyAdminSite()
+
+Note: make sure to use this admin_site in every app to replace admin.site.register()
+
+##### user views.py
+class UpdateUserProfile(LoginRequiredMixin, generic.UpdateView):
+    model = CustomUser
+    form_class = CustomUserChangeForm
+    template_name = 'users/update_admin_profile.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data()
+        context['title'] = 'Update Profile'
+        return context
+
+#######  template/users/update_admin_profile.html
+    {% extends 'admin/base_site.html' %}
+
+{% block content %}
+   <div align="center" class="jumbotron" style="padding:5px">
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <table>
+            {% for field in form.visible_fields %}
+              <tr>
+                <th>{{ field.label_tag }}</th>
+                <td>
+                  {{ field.errors }}
+                  {{ field }}
+                </td>
+              </tr>
+            {% endfor %}
+          </table>
+            <br>
+            <button type="submit" class="btn btn-primary" style="width:300px">Update</button>
+        </form>
+    </div>
+{% endblock %}
